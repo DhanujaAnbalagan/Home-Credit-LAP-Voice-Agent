@@ -1,0 +1,9 @@
+agent: Hello, may I speak with Rahul?
+user: Yeah. I'm Rahul speaking. 
+agent: Hi Rahul, I’m Ananya calling from Home Credit about a pre-approved Loan Against Property offer of up to ₹75 lakh. I’ll just do a quick preliminary check—what type of property would you like to use?
+user: I have a residential property joint owned with my wife. And I have the actual property documents I need a fifty lakh loan. I am self employed, and my incomes come through my bank account. 
+agent: What’s the estimated current market value of the property?
+user: Property market value is around one crore. 
+agent: And what repayment tenure would you prefer, in years?
+user: I want a tenure of ten years. 
+agent: Your preliminary eligibility check is complete. A senior loan expert will call you shortly with the next steps and exact interest-rate details.

@@ -1,0 +1,722 @@
+# Home Credit LAP Voice Agent — Test Cases
+
+## Purpose
+
+These test cases are designed to verify that the AI Voice Agent correctly follows the Home Credit LAP qualification rules while handling natural customer conversations.
+
+The tests cover:
+
+- Normal qualification
+- Immediate disqualification
+- Transfer scenarios
+- ₹75 lakh limit
+- Out-of-order information
+- Ambiguous answers
+- Customer corrections
+- Busy customers
+- Interruptions
+- Multiple pieces of information in one response
+- Missing information
+- Customer objections
+
+---
+
+# Test Case 01 — Happy Path
+
+## Scenario
+
+Customer satisfies all eligibility requirements.
+
+## Customer Information
+
+Property:
+Residential house
+
+Ownership:
+Sole
+
+Documents:
+Available
+
+Loan amount:
+₹50 lakh
+
+Occupation:
+Salaried
+
+Income:
+Bank
+
+Market value:
+₹1 crore
+
+Tenure:
+10 years
+
+## Expected Result
+
+Agent collects all required information.
+
+No disqualification occurs.
+
+No transfer condition occurs.
+
+Final status:
+
+QUALIFIED
+
+Agent informs the customer that a senior loan expert will call shortly.
+
+---
+
+# Test Case 02 — Agricultural Property
+
+## Customer Says
+
+"I have agricultural land."
+
+## Expected State
+
+property_type = AGRICULTURAL
+
+## Expected Result
+
+Immediate disqualification.
+
+The agent should politely explain that the property does not meet the criteria for this specific offer.
+
+The agent should NOT continue asking the remaining eligibility questions.
+
+Final status:
+
+DISQUALIFIED
+
+---
+
+# Test Case 03 — Original Documents Not Available
+
+## Customer Says
+
+"I don't have the original property documents with me."
+
+## Expected State
+
+documents_available = NO
+
+## Expected Result
+
+Immediate disqualification.
+
+Final status:
+
+DISQUALIFIED
+
+The agent should not continue with unnecessary questions.
+
+---
+
+# Test Case 04 — Cash Income
+
+## Customer Says
+
+"I am self-employed and most of my income is in cash."
+
+## Expected State
+
+occupation = SELF_EMPLOYED
+
+income_mode = CASH
+
+## Expected Result
+
+Immediate disqualification because cash income is not eligible.
+
+Final status:
+
+DISQUALIFIED
+
+---
+
+# Test Case 05 — Loan Amount Above ₹75 Lakh
+
+## Customer Says
+
+"I need ₹90 lakh."
+
+## Expected Result
+
+Agent explains:
+
+- Maximum available under this offer is ₹75 lakh.
+- Ask whether the customer would like to proceed with ₹75 lakh.
+
+### If Customer Says YES
+
+Continue qualification with:
+
+loan_amount = ₹75,00,000
+
+### If Customer Says NO
+
+End the call politely.
+
+Final status:
+
+DISQUALIFIED
+
+---
+
+# Test Case 06 — Existing Loan
+
+## Customer Says
+
+"I already have a loan against this property."
+
+## Expected Result
+
+Do NOT treat this as an ordinary eligibility disqualification.
+
+Agent should explain that a specialist will handle the loan-transfer requirement.
+
+Final status:
+
+TRANSFER_REQUIRED
+
+End the call.
+
+---
+
+# Test Case 07 — EMI Reduction
+
+## Customer Says
+
+"I already have a loan and mainly want to reduce my EMI."
+
+## Expected Result
+
+Transfer to the appropriate specialist.
+
+Final status:
+
+TRANSFER_REQUIRED
+
+The agent should not continue the fresh-loan qualification flow.
+
+---
+
+# Test Case 08 — Out-of-Order Information
+
+## Customer Says
+
+"I have a residential house jointly owned with my wife. Its value is around ₹1.2 crore and I need ₹40 lakh."
+
+## Expected State
+
+property_type = RESIDENTIAL
+
+ownership_status = JOINT
+
+market_value = ₹1.2 crore
+
+loan_amount = ₹40 lakh
+
+## Expected Result
+
+Agent must NOT ask those four questions again.
+
+Agent should continue with the first missing information.
+
+Expected next topic:
+
+Original property documents.
+
+---
+
+# Test Case 09 — Multiple Information Pieces
+
+## Customer Says
+
+"I'm salaried, my salary comes into my bank account, and I want a 12-year tenure."
+
+## Expected State
+
+occupation = SALARIED
+
+income_mode = BANK
+
+tenure_years = 12
+
+## Expected Result
+
+Agent stores all three pieces of information.
+
+Agent should not ask those questions again.
+
+Agent continues with the first remaining missing eligibility information.
+
+---
+
+# Test Case 10 — Ambiguous Documents
+
+## Customer Says
+
+"I think I have the property papers somewhere."
+
+## Expected State
+
+documents_available = UNKNOWN
+
+## Expected Result
+
+Agent should NOT assume that the documents are available.
+
+Agent should ask a clarification question such as:
+
+"Just to confirm, do you currently have the original property documents available?"
+
+---
+
+# Test Case 11 — Customer Corrects Property Type
+
+## Customer Initially Says
+
+"It's a commercial property."
+
+Later:
+
+"Sorry, I meant it's actually a residential property."
+
+## Expected State
+
+property_type = RESIDENTIAL
+
+## Expected Result
+
+The latest clear answer replaces the previous answer.
+
+Agent should re-check eligibility.
+
+The customer should not be treated as commercial after the correction.
+
+---
+
+# Test Case 12 — Tenure Below Minimum
+
+## Customer Says
+
+"I want the loan for 2 years."
+
+## Expected State
+
+tenure_years = 2
+
+## Expected Result
+
+Disqualify because minimum eligible tenure is 3 years.
+
+Final status:
+
+DISQUALIFIED
+
+---
+
+# Test Case 13 — Tenure Above Maximum
+
+## Customer Says
+
+"I would like a 20-year tenure."
+
+## Expected State
+
+tenure_years = 20
+
+## Expected Result
+
+Disqualify because maximum eligible tenure is 15 years.
+
+Final status:
+
+DISQUALIFIED
+
+---
+
+# Test Case 14 — Boundary Tenure: 3 Years
+
+## Customer Says
+
+"I want a 3-year tenure."
+
+## Expected Result
+
+3 years is eligible.
+
+The agent should continue qualification.
+
+---
+
+# Test Case 15 — Boundary Tenure: 15 Years
+
+## Customer Says
+
+"I want a 15-year tenure."
+
+## Expected Result
+
+15 years is eligible.
+
+The agent should continue qualification.
+
+---
+
+# Test Case 16 — Busy Customer
+
+## Customer Says
+
+"I'm currently in a meeting. Can you call me later?"
+
+## Expected Result
+
+Agent should:
+
+1. Acknowledge that the customer is busy.
+2. Ask for a preferred callback time.
+3. Record the callback time.
+4. End the current call politely.
+
+Final status:
+
+CALLBACK_REQUESTED
+
+---
+
+# Test Case 17 — Customer Provides Information During Introduction
+
+## Customer Says
+
+"Yes, I'm the customer. I have a residential flat, jointly owned with my wife, and I'm looking for around ₹60 lakh."
+
+## Expected State
+
+customer_verified = YES
+
+property_type = RESIDENTIAL
+
+ownership_status = JOINT
+
+loan_amount = ₹60 lakh
+
+## Expected Result
+
+Agent should not repeat questions for information already provided.
+
+Continue with the first missing information.
+
+---
+
+# Test Case 18 — Customer Says They Don't Know
+
+## Customer Says
+
+"I'm not sure about the current market value."
+
+## Expected State
+
+market_value = UNKNOWN
+
+## Expected Result
+
+Do not invent or estimate the property value.
+
+Agent should acknowledge that the customer does not currently know the value and handle the missing information appropriately.
+
+The agent must not create an eligibility rule based on market value.
+
+---
+
+# Test Case 19 — Customer Asks for Interest Rate
+
+## Customer Says
+
+"What interest rate will I get?"
+
+## Expected Result
+
+Agent should NOT invent an interest rate.
+
+Agent should explain that the exact interest-rate details will be provided by the senior loan expert after the preliminary qualification.
+
+Then return to the qualification flow if required.
+
+---
+
+# Test Case 20 — Customer Asks for Final Approval
+
+## Customer Says
+
+"So does this mean my loan is approved?"
+
+## Expected Result
+
+Agent should clarify that this is only a preliminary qualification.
+
+The AI agent must not promise final approval.
+
+The customer will be contacted by a senior loan expert for the next stage.
+
+---
+
+# Test Case 21 — Customer Gives Everything at Once
+
+## Customer Says
+
+"I have a residential house which I own myself, the original documents are available, I need ₹50 lakh, I'm self-employed and my income comes through the bank, the property is worth about ₹1 crore, and I want 10 years."
+
+## Expected State
+
+property_type = RESIDENTIAL
+
+ownership_status = SOLE
+
+documents_available = YES
+
+loan_amount = ₹50 lakh
+
+occupation = SELF_EMPLOYED
+
+income_mode = BANK
+
+market_value = ₹1 crore
+
+tenure_years = 10
+
+## Expected Result
+
+All required information is available.
+
+Agent should NOT ask the eight questions one by one again.
+
+After validation:
+
+status = QUALIFIED
+
+Agent proceeds to handoff.
+
+---
+
+# Test Case 22 — Customer Interrupts the Agent
+
+## Scenario
+
+Agent begins asking about property type.
+
+Customer interrupts:
+
+"Yes, it's a residential house. And I need ₹40 lakh."
+
+## Expected State
+
+property_type = RESIDENTIAL
+
+loan_amount = ₹40 lakh
+
+## Expected Result
+
+Agent should acknowledge the information and continue with the next missing field.
+
+The agent should not force the customer to answer the original question again.
+
+---
+
+# Test Case 23 — Customer Gives an Unsupported Requirement
+
+## Customer Says
+
+"My property is worth ₹10 lakh. Am I definitely eligible?"
+
+## Expected Result
+
+Agent must NOT invent a minimum market-value threshold.
+
+Agent should continue checking the actual specified eligibility criteria.
+
+The agent must not claim eligibility or ineligibility solely because of the market value.
+
+---
+
+# Test Case 24 — Customer Refuses ₹75 Lakh Alternative
+
+## Customer Says
+
+"I need ₹90 lakh."
+
+Agent:
+
+"The maximum available under this offer is ₹75 lakh. Would you like to proceed with ₹75 lakh?"
+
+Customer:
+
+"No, I need at least ₹90 lakh."
+
+## Expected Result
+
+End the conversation politely.
+
+Final status:
+
+DISQUALIFIED
+
+Reason:
+
+Requested amount exceeds the maximum available amount for this offer and customer does not accept the maximum allowed amount.
+
+---
+
+# Test Case 25 — Transfer Condition Appears Mid-Conversation
+
+## Scenario
+
+Customer initially begins normal qualification.
+
+Later says:
+
+"Actually, I already have a loan on this property."
+
+## Expected Result
+
+Agent should immediately switch to transfer handling.
+
+status = TRANSFER_REQUIRED
+
+Agent should stop the normal qualification flow.
+
+---
+
+# Test Case 26 — Customer Changes Loan Amount
+
+## Customer Initially Says
+
+"I need ₹50 lakh."
+
+Later:
+
+"Actually, I need ₹80 lakh."
+
+## Expected State
+
+loan_amount = ₹80 lakh
+
+## Expected Result
+
+Agent should use the latest clear amount.
+
+Because ₹80 lakh exceeds the maximum:
+
+→ Explain ₹75 lakh maximum.
+
+→ Ask whether customer wants to proceed with ₹75 lakh.
+
+---
+
+# Test Case 27 — Customer Gives Unclear Tenure
+
+## Customer Says
+
+"I want a long tenure."
+
+## Expected State
+
+tenure_years = UNKNOWN
+
+## Expected Result
+
+Agent should ask for the desired tenure in years.
+
+The agent must not assume 15 years.
+
+---
+
+# Test Case 28 — Customer Wants to Stop
+
+## Customer Says
+
+"Please don't call me about this."
+
+## Expected Result
+
+Agent should respect the customer's request and end the conversation politely.
+
+The agent should not continue qualification questions.
+
+---
+
+# Test Case 29 — Customer Asks an Unrelated Question
+
+## Scenario
+
+Customer asks an unrelated question during qualification.
+
+## Expected Result
+
+Agent should respond briefly if possible and then return to the qualification flow.
+
+The agent should continue from the first missing required field.
+
+---
+
+# Test Case 30 — Complete Qualification With No Errors
+
+## Scenario
+
+Customer satisfies every requirement and answers every question clearly.
+
+## Expected Result
+
+All state variables are complete.
+
+No transfer condition exists.
+
+No disqualification condition exists.
+
+Final status:
+
+QUALIFIED
+
+Agent informs customer:
+
+A senior loan expert will contact them shortly and provide the exact interest-rate details.
+
+---
+
+# Test Coverage Summary
+
+The test suite covers:
+
+- Happy path
+- Agricultural property
+- Missing documents
+- Cash income
+- Loan amount above ₹75 lakh
+- Existing loan
+- EMI reduction
+- Out-of-order information
+- Multiple facts in one response
+- Ambiguous information
+- Corrections
+- Minimum tenure boundary
+- Maximum tenure boundary
+- Busy customer
+- Callback
+- Information given during introduction
+- Unknown information
+- Interest-rate questions
+- Final approval questions
+- Full information in one response
+- Interruptions
+- Unsupported assumptions
+- Refusal of ₹75 lakh alternative
+- Mid-conversation transfer
+- Loan amount correction
+- Unclear tenure
+- Stop/opt-out request
+- Unrelated questions
+- Complete qualification

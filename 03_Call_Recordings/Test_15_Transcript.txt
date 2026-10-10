@@ -1,0 +1,9 @@
+agent: Hello, may I speak with Rahul?
+user: Yes. 
+agent: Hi Rahul, I’m Ananya from Home Credit. You have a pre-approved Loan Against Property offer up to ₹75 lakh. I’ll do a quick preliminary check—what type of property would you like to use?
+user: I'm busy right now. Can you call me tomorrow? 
+agent: Sure. What time tomorrow would suit you for a callback?
+user: Kindly watch around eleven AM. 
+agent: Okay, I’ll arrange a callback tomorrow at around 11 AM. Goodbye.
+user: Bye. 
+agent: Goodbye.

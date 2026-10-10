@@ -1,0 +1,21 @@
+# Test Case 07 — Customer Wants EMI Reduction
+
+**Status:** Core behavior passed; extraction review pending.
+
+**Objective:** Verify that a customer requesting EMI reduction is routed to specialist follow-up.
+
+**Expected behavior:** The agent should recognize the EMI reduction request, explain that a specialist will contact the customer, and end the call without continuing standard qualification.
+
+**Actual behavior:** The agent identified the EMI reduction request, explained that a specialist would handle it as a loan-transfer requirement, and ended the conversation.
+
+**Passed checks:**
+- EMI reduction request recognized.
+- Specialist follow-up communicated.
+- Normal qualification stopped.
+- Call ended appropriately.
+
+**Observation:** The greeting contained fragmented customer responses and interruptions. The agent eventually recovered and proceeded with the qualification conversation.
+
+**Audio issues:** Not assessed from the transcript alone.
+
+**Retest required:** Only if extraction review or further conversation testing identifies an issue.

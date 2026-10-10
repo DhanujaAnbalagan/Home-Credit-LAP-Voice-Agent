@@ -1,0 +1,27 @@
+# Test Case 15 — Customer Is Busy and Requests a Callback
+
+Status: Core callback handling passed; actual scheduling not verified.
+
+Objective:
+Verify that the agent handles a busy customer politely and records the requested callback time.
+
+Transcript review:
+- The customer said they were busy and asked for a call tomorrow.
+- The agent asked what time would suit the customer.
+- The customer requested around 11 AM.
+- The agent acknowledged a callback tomorrow around 11 AM and ended the conversation politely.
+
+Post-call extraction from the screenshot:
+- qualification_status: CALLBACK_REQUESTED
+- End-to-end latency: 2781 ms
+- Call Successful: Successful
+- Other extracted fields show defaults or values not discussed in the transcript; do not treat them as customer-confirmed.
+
+Expected result:
+qualification_status should be CALLBACK_REQUESTED, with the requested callback time noted as tomorrow around 11 AM.
+
+Conclusion:
+The conversation and status extraction match the callback scenario. The transcript alone does not prove that an actual callback was scheduled in a calendar or calling system, so verify the scheduling mechanism separately if the assignment requires it.
+
+Audio issues:
+Not assessed from transcript and call-log screenshot alone.

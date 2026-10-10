@@ -1,0 +1,11 @@
+agent: Hello, may I speak with Rahul?
+user: Yeah. This is Rahul speaking. 
+agent: Hi Rahul, I’m Ananya, a virtual assistant calling from Home Credit about a pre-approved Loan Against Property offer of up to ₹75 lakh. I’ll do a quick preliminary check—what type of property would you like to use?
+user: Our residential property for ninety lakh. 
+agent: What loan amount are you looking for against the property?
+user: Ninety lakh. 
+agent: The offer is available up to ₹75 lakh. Would you like to proceed with ₹75 lakh?
+user: No. I need ninety lakh, and I don't want seventy five lakh. 
+agent: I’m sorry, this offer is limited to ₹75 lakh, so we can’t proceed with the requested amount. Thank you for your time.
+user: Thank you. 
+agent: You’re welcome.

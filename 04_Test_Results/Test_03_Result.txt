@@ -1,0 +1,68 @@
+# Test 03 — Original Property Documents Unavailable
+
+**Test objective:** Verify that the voice agent correctly disqualifies a customer who does not have the original property documents.
+
+**Expected outcome:** `DISQUALIFIED`
+
+**Test status:** Pending execution and verification.
+
+## 1. Test Scenario
+
+The customer confirms their identity, expresses interest in the Home Credit Loan Against Property offer, and provides the following details:
+
+- Property type: Residential
+- Ownership: Joint
+- Original property documents: Unavailable; held by the bank
+
+**Customer response:** “No, I don't have the original property documents. The bank has them.”
+
+## 2. Expected Agent Behavior
+
+- Identify the property type as Residential.
+- Record ownership as Joint.
+- Record original property documents as unavailable.
+- Explain politely that original property documents must be available to qualify.
+- End the call politely after explaining the reason.
+- Do not continue asking the remaining eligibility questions.
+- Do not promise a senior loan expert follow-up.
+
+## 3. Expected Post-Call Extraction
+
+| Field | Expected value |
+|---|---|
+| `qualification_status` | `DISQUALIFIED` |
+| `property_type` | `Residential` |
+| `ownership_status` | `Joint` |
+| `documents_available` | `false` |
+
+Other fields should reflect information actually provided during the call. Unanswered fields should not be interpreted as customer-provided answers.
+
+## 4. Test Checks
+
+- [ ] Residential property identified correctly.
+- [ ] Joint ownership captured correctly.
+- [ ] Original documents recorded as unavailable.
+- [ ] Qualification status set to DISQUALIFIED.
+- [ ] Agent explained the reason politely.
+- [ ] Agent ended the call without continuing eligibility questions.
+- [ ] No inappropriate senior expert follow-up promised.
+- [ ] Post-call extraction is accurate.
+
+## 5. Audio Issues and Observations
+
+- No audio lag or playback issues were observed during the test.
+- Audio was clear throughout the conversation.
+
+## 6. Final Result
+
+**Result:** Pending execution.
+
+**Reason:** The test has not yet been evaluated against the actual conversation and post-call extraction.
+
+**Next action:** Run Test 03 in Retell AI, review the transcript and extracted fields, and update the checklist based on the observed behavior.
+
+## 7. Evidence Files
+
+- Recording: `Test_03_Documents_Unavailable`
+- Transcript: `Test_03_Documents_Unavailable_Transcript.txt`
+- Call log: `Test_03_Documents_Unavailable_Call_Log.png`

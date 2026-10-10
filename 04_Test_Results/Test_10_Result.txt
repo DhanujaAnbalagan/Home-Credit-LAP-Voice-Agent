@@ -1,0 +1,36 @@
+TEST 10 — AMBIGUOUS DOCUMENT AVAILABILITY
+Source transcript: Test_10_Transcript(1).txt
+
+Purpose:
+Verify that the agent clarifies an uncertain answer about original property documents and applies the document-availability rule correctly.
+
+Observed conversation:
+- Property: Residential house
+- Ownership: Jointly owned with wife
+- Customer initially says the original documents might be with the bank.
+- Agent asks the customer to confirm whether the originals are available with them.
+- Customer clarifies that the bank has the original documents and they are not available with the customer.
+- Agent explains that the offer does not meet the criteria and ends the call politely.
+
+Expected extraction:
+- property_type: Residential
+- ownership_status: Joint
+- documents_available: false
+- qualification_status: DISQUALIFIED
+
+Other extraction fields:
+- requested_loan_amount: Not established in this transcript
+- final_qualification_amount: Not established in this transcript
+- occupation: Not established in this transcript
+- income_mode: Not established in this transcript
+- market_value: Not established in this transcript
+- tenure_years: Not established in this transcript
+
+Conversation assessment:
+PASS — The agent clarified the ambiguous answer, recognized that the original documents were unavailable with the customer, disqualified the customer, and ended politely without incorrectly transferring to a specialist.
+
+Post-call extraction assessment:
+PENDING VERIFICATION — The transcript supports DISQUALIFIED, but the actual Retell post-call extraction output was not provided. Verify that qualification_status is DISQUALIFIED and documents_available is false.
+
+Overall result:
+PENDING EXTRACTION VERIFICATION

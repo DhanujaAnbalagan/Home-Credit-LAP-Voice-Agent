@@ -1,0 +1,20 @@
+# Test Case 05 — Retest 01: Loan Amount Above ₹75 Lakh
+
+**Status:** Conversation behavior passed; post-call extraction pending review.
+
+**Objective:** Verify that the agent handles a customer requesting ₹90 lakh, refusing the ₹75 lakh maximum, and then changing their mind.
+
+**Actual behavior:** The agent explained the ₹75 lakh cap, correctly ended the initial qualification attempt after the customer refused, and then confirmed the customer's revised acceptance before continuing.
+
+**Passed checks:**
+- Maximum offer amount explained.
+- Initial refusal handled correctly.
+- Change of mind explicitly confirmed.
+- Qualification continued after confirmation.
+- Preliminary outcome and specialist follow-up communicated.
+
+**Remaining verification:** Check that the post-call extraction records `qualification_status` as `QUALIFIED`, `requested_loan_amount` as 9000000 if it captures the original request, and `final_qualification_amount` as 7500000. Confirm the other eligibility fields as well.
+
+**Audio issues:** Not assessed from the transcript alone.
+
+**Final status:** Pending post-call extraction review.

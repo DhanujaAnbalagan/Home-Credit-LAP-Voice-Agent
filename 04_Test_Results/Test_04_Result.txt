@@ -1,0 +1,81 @@
+# Test 04 — Cash Income
+
+**Test objective:** Verify that the voice agent correctly disqualifies a customer whose income is received in cash rather than through a bank.
+
+**Expected outcome:** `DISQUALIFIED`
+
+**Test status:** Pending execution and verification.
+
+## 1. Test Scenario
+
+The customer confirms their identity, expresses interest in the Home Credit Loan Against Property offer, and provides the following information:
+
+- Property type: Residential
+- Ownership: Joint
+- Original property documents: Available
+- Requested loan amount: ₹50,00,000
+- Occupation: Self-employed
+- Income mode: Cash
+
+**Customer response:** “I receive all my income in cash, not through a bank.”
+
+## 2. Expected Agent Behavior
+
+- Capture the property type as Residential.
+- Capture ownership as Joint.
+- Record original property documents as available.
+- Capture the requested loan amount as ₹50,00,000.
+- Capture occupation as Self-employed.
+- Identify income mode as Cash.
+- Explain politely that cash income does not meet the eligibility criteria.
+- Set the qualification status to `DISQUALIFIED`.
+- End the call without asking about market value or tenure.
+- Do not promise a senior loan expert follow-up.
+
+## 3. Expected Post-Call Extraction
+
+| Field | Expected value |
+|---|---|
+| `qualification_status` | `DISQUALIFIED` |
+| `property_type` | `Residential` |
+| `ownership_status` | `Joint` |
+| `documents_available` | `true` |
+| `requested_loan_amount` | `5000000` |
+| `final_qualification_amount` | `5000000` |
+| `occupation` | `Self-employed` |
+| `income_mode` | `Cash` |
+
+Other fields should reflect information actually provided during the call. Do not assume unanswered fields were supplied by the customer.
+
+## 4. Test Checks
+
+- [ ] Residential property identified correctly.
+- [ ] Joint ownership captured correctly.
+- [ ] Original documents recorded as available.
+- [ ] Requested loan amount captured correctly.
+- [ ] Self-employed occupation captured correctly.
+- [ ] Cash income identified correctly.
+- [ ] Qualification status set to DISQUALIFIED.
+- [ ] Agent explained the reason politely.
+- [ ] Agent ended the call without continuing eligibility questions.
+- [ ] No inappropriate senior expert follow-up promised.
+- [ ] Post-call extraction is accurate.
+
+### 5. Issues and Observations
+
+- No audio lag or playback issues were observed during this test.
+- Audio quality was clear throughout the conversation.
+- Other issues, if any, will be recorded after reviewing the transcript and post-call extraction.
+## 6. Final Result
+
+**Result:** Pending execution.
+
+**Reason:** The test has not yet been evaluated against the actual conversation and post-call extraction.
+
+**Next action:** Run Test 04 in Retell AI, review the transcript and extracted fields, and update the checklist based on the observed behavior.
+
+## 7. Evidence Files
+
+- Recording: `Test_04_Cash_Income`
+- Transcript: `Test_04_Cash_Income_Transcript.txt`
+- Call log: `Test_04_Cash_Income_Call_Log.png`

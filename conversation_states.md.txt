@@ -1,0 +1,669 @@
+# Home Credit LAP Voice Agent — Conversation State Design
+
+## 1. Purpose
+
+The voice agent should maintain the current state of the conversation instead of treating every customer response as a completely new question.
+
+For every customer response, the agent should:
+
+1. Understand the customer's message.
+2. Extract any useful information.
+3. Update the current state.
+4. Check for transfer conditions.
+5. Check for disqualification.
+6. Check whether the customer corrected previous information.
+7. Identify the first missing required information.
+8. Ask the next appropriate question.
+
+---
+
+# 2. Customer State Variables
+
+## Customer Verification
+
+customer_verified
+
+Possible values:
+
+- UNKNOWN
+- YES
+- NO
+
+Purpose:
+
+Determines whether the agent has verified that it is speaking with the correct customer.
+
+---
+
+## Callback
+
+callback_requested
+
+Possible values:
+
+- NO
+- YES
+
+callback_time
+
+Possible values:
+
+- UNKNOWN
+- Customer-provided callback time
+
+If the customer is busy and provides a callback time:
+
+callback_requested = YES
+
+Conversation status:
+
+CALLBACK_REQUESTED
+
+---
+
+# 3. Eligibility State
+
+## Property Type
+
+property_type
+
+Possible values:
+
+- UNKNOWN
+- RESIDENTIAL
+- COMMERCIAL
+- INDUSTRIAL
+- AGRICULTURAL
+
+Rules:
+
+RESIDENTIAL → eligible
+
+COMMERCIAL → eligible
+
+INDUSTRIAL → eligible
+
+AGRICULTURAL → disqualified
+
+---
+
+## Ownership
+
+ownership_status
+
+Possible values:
+
+- UNKNOWN
+- SOLE
+- JOINT
+
+Rules:
+
+SOLE → eligible
+
+JOINT → eligible
+
+UNKNOWN → clarification required
+
+---
+
+## Original Documents
+
+documents_available
+
+Possible values:
+
+- UNKNOWN
+- YES
+- NO
+
+Rules:
+
+YES → eligible
+
+NO → disqualified
+
+UNKNOWN → clarification required
+
+---
+
+## Loan Amount
+
+requested_loan_amount
+
+Possible values:
+
+- UNKNOWN
+- Customer-provided requested amount
+
+final_qualification_amount
+
+Possible values:
+
+- UNKNOWN
+- Customer-provided amount if <= ₹75,00,000
+- ₹75,00,000 when customer requests a higher amount but accepts the maximum
+
+Rules:
+
+If requested amount <= ₹75,00,000:
+
+requested_loan_amount = customer requested amount
+
+final_qualification_amount = requested_loan_amount
+
+Continue qualification.
+
+If requested amount > ₹75,00,000:
+
+1. Store the requested amount in requested_loan_amount.
+2. Explain that the maximum available under this offer is ₹75,00,000.
+3. Ask whether the customer wants to proceed with ₹75,00,000.
+
+If customer says YES:
+
+final_qualification_amount = ₹75,00,000
+
+Continue qualification.
+
+If customer says NO:
+
+End the conversation politely.
+
+The requested amount remains stored separately from the final qualification amount.
+
+---
+
+## Occupation
+
+occupation
+
+Possible values:
+
+- UNKNOWN
+- SALARIED
+- SELF_EMPLOYED
+
+Rules:
+
+SALARIED → eligible
+
+SELF_EMPLOYED → eligible
+
+UNKNOWN → clarification required
+
+---
+
+## Income Mode
+
+income_mode
+
+Possible values:
+
+- UNKNOWN
+- BANK
+- CASH
+
+Rules:
+
+BANK → eligible
+
+CASH → disqualified
+
+UNKNOWN → clarification required
+
+---
+
+## Market Value
+
+market_value
+
+Possible values:
+
+- UNKNOWN
+- Customer-provided estimated value
+
+Important:
+
+The assignment does not specify a minimum market-value threshold.
+
+Therefore:
+
+- Collect the estimated current market value.
+- Do not invent a minimum market-value requirement.
+- Do not disqualify based on market value.
+- Do not claim that market value guarantees eligibility.
+
+---
+
+## Tenure
+
+tenure_years
+
+Possible values:
+
+- UNKNOWN
+- Customer-provided number of years
+
+Rules:
+
+3–15 years inclusive → eligible
+
+Less than 3 years → disqualified
+
+More than 15 years → disqualified
+
+---
+
+# 4. Transfer State
+
+existing_loan
+
+Possible values:
+
+- UNKNOWN
+- YES
+- NO
+
+emi_reduction
+
+Possible values:
+
+- UNKNOWN
+- YES
+- NO
+
+Transfer condition:
+
+If:
+
+existing_loan = YES
+
+OR
+
+emi_reduction = YES
+
+Then:
+
+status = TRANSFER_REQUIRED
+
+The agent should explain that a specialist will contact the customer regarding the loan-transfer requirement.
+
+The agent should then end the call.
+
+This is a transfer case, not an ordinary eligibility disqualification.
+
+---
+
+# 5. Overall Conversation Status
+
+status
+
+Possible values:
+
+VERIFYING
+
+OFFER_PRESENTED
+
+QUALIFYING
+
+CALLBACK_REQUESTED
+
+TRANSFER_REQUIRED
+
+DISQUALIFIED
+
+QUALIFIED
+
+---
+
+# 6. Meaning of Each Status
+
+## VERIFYING
+
+The agent is verifying the customer's identity / whether it is speaking with the correct customer.
+
+---
+
+## OFFER_PRESENTED
+
+The customer has been verified and the agent is explaining the LAP offer.
+
+---
+
+## QUALIFYING
+
+The agent is collecting and validating eligibility information.
+
+---
+
+## CALLBACK_REQUESTED
+
+The customer is currently busy and has requested a callback.
+
+The current call should end.
+
+---
+
+## TRANSFER_REQUIRED
+
+The customer has an existing loan on the property or wants EMI reduction.
+
+A specialist should handle the case.
+
+The fresh-loan qualification flow should stop.
+
+---
+
+## DISQUALIFIED
+
+The customer has failed one of the eligibility requirements for this specific offer.
+
+The agent should explain the reason politely and end the call.
+
+---
+
+## QUALIFIED
+
+All required eligibility information has been collected and the customer meets the specified criteria.
+
+The agent should inform the customer that a senior loan expert will call them shortly.
+
+---
+
+# 7. Opt-Out State
+
+The customer may explicitly ask to stop the conversation or not be contacted about the offer.
+
+Examples:
+
+- "I don't want this."
+- "Please don't call me again."
+- "I'm not interested."
+- "Stop calling me."
+
+The agent should:
+
+1. Respect the request immediately.
+2. Stop qualification.
+3. Avoid persuading the customer to continue.
+4. End the conversation politely.
+
+An explicit opt-out is not an eligibility disqualification.
+
+---
+
+# 8. Unknown Is Not No
+
+UNKNOWN must never be treated as NO.
+
+Example:
+
+Customer:
+
+"I am not sure whether the original documents are available."
+
+Correct state:
+
+documents_available = UNKNOWN
+
+The agent should clarify.
+
+Incorrect:
+
+documents_available = NO
+
+The AI must never guess.
+
+---
+
+# 9. Out-of-Order Information
+
+The customer does not have to answer questions in the exact order asked.
+
+Example:
+
+Agent:
+
+"What type of property do you have?"
+
+Customer:
+
+"It's my residential house, jointly owned with my wife. It's worth around 1 crore and I need 50 lakhs."
+
+The agent should extract:
+
+property_type = RESIDENTIAL
+
+ownership_status = JOINT
+
+market_value = ₹1,00,00,000
+
+requested_loan_amount = ₹50,00,000
+
+final_qualification_amount = ₹50,00,000
+
+The agent must not ask those questions again.
+
+It should continue with the first missing required information.
+
+---
+
+# 10. Correction Handling
+
+The customer may correct previously provided information.
+
+Example:
+
+Customer:
+
+"Actually, I said commercial, but it is residential."
+
+The agent should update:
+
+property_type = RESIDENTIAL
+
+The latest clear information takes priority over the previous information.
+
+After updating the state:
+
+1. Re-check the relevant business rules.
+2. Continue from the appropriate point.
+
+---
+
+# 11. Core Decision Loop
+
+For every customer response:
+
+CUSTOMER UTTERANCE
+        ↓
+EXTRACT INFORMATION
+        ↓
+UPDATE STATE
+        ↓
+CHECK OPT-OUT
+        ↓
+CHECK TRANSFER
+        ↓
+CHECK DISQUALIFICATION
+        ↓
+CHECK CORRECTIONS
+        ↓
+FIND FIRST MISSING INFORMATION
+        ↓
+ASK NEXT QUESTION
+        ↓
+REPEAT
+
+When all required information is complete:
+
+        ↓
+
+CHECK FINAL ELIGIBILITY
+        ↓
+QUALIFIED
+        ↓
+SENIOR LOAN EXPERT HANDOFF
+
+---
+
+# 12. First-Missing-Field Rule
+
+The agent should normally ask for the first required field that is still UNKNOWN.
+
+Eligibility information order:
+
+1. Property Type
+2. Ownership
+3. Original Documents
+4. Loan Amount
+5. Occupation
+6. Income Mode
+7. Market Value
+8. Tenure
+
+However, this is NOT a rigid questionnaire.
+
+If the customer provides information out of order:
+
+- capture it,
+- validate it,
+- skip it later.
+
+Always ask for the first remaining UNKNOWN required field.
+
+---
+
+# 13. Example State
+
+Suppose the customer says:
+
+"My house is residential, jointly owned with my wife. I need 40 lakhs."
+
+Current state:
+
+customer_verified = YES
+
+property_type = RESIDENTIAL
+
+ownership_status = JOINT
+
+documents_available = UNKNOWN
+
+requested_loan_amount = ₹40,00,000
+
+final_qualification_amount = ₹40,00,000
+
+occupation = UNKNOWN
+
+income_mode = UNKNOWN
+
+market_value = UNKNOWN
+
+tenure_years = UNKNOWN
+
+existing_loan = UNKNOWN
+
+emi_reduction = UNKNOWN
+
+status = QUALIFYING
+
+Next question:
+
+Ask about original property documents.
+
+---
+
+# 14. Example Disqualification
+
+Customer:
+
+"My property is agricultural land."
+
+State update:
+
+property_type = AGRICULTURAL
+
+The business rule is triggered immediately.
+
+status = DISQUALIFIED
+
+The agent should not continue asking the remaining eligibility questions.
+
+---
+
+# 15. Example Transfer
+
+Customer:
+
+"I already have a loan on this property and I want to reduce my EMI."
+
+State:
+
+existing_loan = YES
+
+emi_reduction = YES
+
+status = TRANSFER_REQUIRED
+
+The agent should not continue the fresh-loan qualification flow.
+
+---
+
+# 16. Example Above ₹75 Lakh
+
+Customer:
+
+"I need ₹90 lakh."
+
+State:
+
+requested_loan_amount = ₹90,00,000
+
+final_qualification_amount = UNKNOWN
+
+The agent explains:
+
+"The maximum available under this offer is ₹75 lakh. Would you like to proceed with ₹75 lakh?"
+
+If customer says YES:
+
+final_qualification_amount = ₹75,00,000
+
+Continue qualification.
+
+If customer says NO:
+
+End conversation.
+
+---
+
+# 17. Final Qualification Gate
+
+The agent must NOT set:
+
+status = QUALIFIED
+
+until all required eligibility information has been collected and validated.
+
+Required information:
+
+- Property type
+- Ownership
+- Original documents
+- Final qualification amount
+- Occupation
+- Income mode
+- Market value
+- Tenure
+
+And:
+
+- No disqualification condition exists.
+- No transfer condition exists.
+- Any amount above ₹75,00,000 has been resolved by accepting ₹75,00,000.
+
+Then:
+
+status = QUALIFIED

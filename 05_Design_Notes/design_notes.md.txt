@@ -1,0 +1,93 @@
+# Design Notes — Home Credit Loan Against Property Qualification Voice Agent
+
+## 1. Project objective
+Build a Retell AI voice agent that performs a preliminary eligibility check for Home Credit's Loan Against Property (LAP) offer of up to ₹75,00,000. The agent collects the required customer and property details, applies the stated eligibility rules, and determines whether the customer is qualified, disqualified, requires specialist transfer, or requests a callback.
+
+## 2. Agent setup
+- Platform: Retell AI
+- Agent: Home Credit LAP Qualification Agent
+- Conversation type: Single Prompt
+- Voice: Kate
+- Language setting: English (US)
+- Greeting: “Hello, may I speak with {{customer_name}}?”
+- The agent identifies itself as Ananya from Home Credit in the conversation.
+
+## 3. Information collected
+The agent should collect and extract the following fields when they are provided:
+- `property_type`
+- `ownership_status`
+- `documents_available`
+- `requested_loan_amount`
+- `final_qualification_amount`
+- `occupation`
+- `income_mode`
+- `market_value`
+- `tenure_years`
+- `qualification_status`
+
+The agent should remember answers given out of order, use the customer's latest confirmed correction, clarify ambiguous answers, and avoid inventing information that was not supplied.
+
+## 4. Business-rule decisions
+- Maximum offer amount: ₹75,00,000.
+- Eligible property types: residential, commercial, and industrial.
+- Agricultural property: disqualify.
+- Ownership may be sole or joint.
+- Original property documents must be available; if unavailable, disqualify.
+- Occupation must be salaried or self-employed.
+- Bank-received income is eligible; cash income disqualifies.
+- Eligible tenure: 3 through 15 years, inclusive.
+- If the customer requests more than ₹75,00,000, explain the cap and ask whether they accept ₹75,00,000. If they refuse, disqualify. If they change their mind, confirm their revised acceptance before continuing.
+- An existing loan on the property or an explicit request for EMI reduction requires specialist transfer, unless a disqualification condition has already taken priority.
+- `QUALIFIED` is a preliminary eligibility outcome, not a guarantee of final loan approval.
+- Exact rates and final next steps are provided by a senior loan expert; the agent must not invent rates or guarantee approval.
+
+## 5. Qualification status definitions
+- `QUALIFIED`: All required eligibility conditions are satisfied.
+- `DISQUALIFIED`: At least one mandatory eligibility condition fails.
+- `TRANSFER_REQUIRED`: The customer explicitly mentions an existing loan on the property or requests EMI reduction, and no disqualification rule takes priority.
+- `CALLBACK_REQUESTED`: The customer requests a callback instead of continuing the current conversation.
+
+A senior expert's routine follow-up after a successful preliminary check must not, by itself, cause the agent to set `TRANSFER_REQUIRED`.
+
+## 6. Conversation design
+1. Confirm that the agent is speaking to the intended customer.
+2. Introduce the Home Credit LAP offer and explain that this is a preliminary check.
+3. Collect property type and ownership.
+4. Confirm availability of original property documents.
+5. Collect requested loan amount and apply the ₹75,00,000 cap rule if needed.
+6. Collect occupation and income mode.
+7. Collect estimated property market value.
+8. Collect requested tenure.
+9. Apply the eligibility rules and communicate the appropriate outcome.
+10. For specialist-transfer or callback scenarios, end the standard qualification flow appropriately.
+11. Keep the conversation polite, concise, and clear.
+
+## 7. Testing and validation approach
+The agent was tested against 15 scenarios:
+1. Happy path
+2. Agricultural property
+3. Original documents unavailable
+4. Cash income
+5. Requested amount exceeds cap; customer changes their mind
+6. Existing loan on property
+7. EMI reduction request
+8. Answers provided out of order
+9. Multiple details provided at once
+10. Ambiguous document availability
+11. Customer corrects an answer
+12. Tenure below 3 years
+13. Tenure above 15 years
+14. Customer refuses the ₹75,00,000 cap
+15. Customer requests a callback because they are busy
+
+After prompt changes, selected scenarios were rerun to verify the qualification status and extraction behavior. Final reports should reflect the actual transcript and post-call extraction output rather than assumptions.
+
+## 8. Known limitations and safeguards
+- The agent performs a preliminary eligibility check only; it does not approve a loan.
+- A callback or specialist follow-up should not be described as actually scheduled unless the connected workflow confirms that it has been scheduled.
+- Values not discussed in a call should not be treated as customer-provided data.
+- Qualification status must follow the business rules, not merely the fact that a senior expert will contact the customer.
+- Post-call extraction should be checked separately from conversation behavior.
+
+## 9. Expected outcome
+The design aims to provide consistent rule-based qualification, accurate extraction of customer-provided information, correct disqualification and transfer routing, and clear communication about the next step.

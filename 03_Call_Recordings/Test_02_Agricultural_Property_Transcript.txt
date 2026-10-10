@@ -1,0 +1,14 @@
+agent: Hello, may I speak with Rahul?
+user: Yes. This is Robin speaking. 
+agent: Sorry, I was trying to reach Rahul. Have a good day.
+user: Yes. This is Rahul speaking. 
+agent: Hi Rahul, this is Ananya, a virtual assistant from Home Credit. You have a pre-approved Loan Against Property offer up to ₹75 lakh. I’ll do a quick preliminary check—what type of property would you use?
+agent: Rahul, are you still there?
+user: Yes. I'm interested Please tell me more. 
+agent: It’s a pre-approved Loan Against Property offer for up to ₹75 lakh, subject to a preliminary eligibility check. What type of property would you use for the loan?
+agent: Rahul, are you still there?
+user: Property is agricultural land. 
+agent: I’m sorry, agricultural property isn’t eligible for this specific offer. Thank you for your time.
+user: Yes. 
+user: Thank you. 
+agent: You’re welcome. Take care.

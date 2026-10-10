@@ -1,0 +1,287 @@
+# System Prompt Review
+
+## Purpose
+
+Review the System Prompt against the most important customer scenarios before implementing the voice agent.
+
+The goal is to identify logical gaps before testing on a real voice platform.
+
+---
+
+# Review 01 — Happy Path
+
+### Customer
+"I have a residential house. I own it myself, the original documents are available, I need 50 lakhs, I'm salaried, my salary comes into my bank account, the property is worth around 1 crore, and I want a 10-year tenure."
+
+### Expected State
+
+property_type = RESIDENTIAL
+ownership_status = SOLE
+documents_available = YES
+loan_amount = ₹50,00,000
+occupation = SALARIED
+income_mode = BANK
+market_value = ₹1,00,00,000
+tenure_years = 10
+
+### Expected Outcome
+
+QUALIFIED
+
+### Prompt Check
+
+The prompt instructs the agent to extract multiple pieces of information from a single customer utterance.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 02 — Agricultural Property
+
+### Customer
+"It's agricultural land."
+
+### Expected State
+
+property_type = AGRICULTURAL
+
+### Expected Outcome
+
+DISQUALIFIED
+
+### Prompt Check
+
+The prompt contains an immediate disqualification rule for agricultural property.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 03 — Cash Income
+
+### Customer
+"I'm self-employed and I receive my income mostly in cash."
+
+### Expected State
+
+occupation = SELF_EMPLOYED
+income_mode = CASH
+
+### Expected Outcome
+
+DISQUALIFIED
+
+### Prompt Check
+
+The prompt separately tracks occupation and income mode and immediately disqualifies cash income.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 04 — Above ₹75 Lakh
+
+### Customer
+"I need ₹90 lakh."
+
+### Expected Behavior
+
+Agent explains that the maximum available under this offer is ₹75 lakh.
+
+Agent asks whether the customer wants to proceed with ₹75 lakh.
+
+### If Customer Says
+
+"Yes."
+
+Expected:
+
+loan_amount = ₹75,00,000
+
+Continue qualification.
+
+### If Customer Says
+
+"No."
+
+Expected:
+
+End conversation.
+
+### Prompt Check
+
+The prompt explicitly handles amounts above ₹75 lakh.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 05 — Existing Loan
+
+### Customer
+"I already have a loan on this property."
+
+### Expected State
+
+existing_loan = YES
+
+status = TRANSFER_REQUIRED
+
+### Expected Outcome
+
+Transfer to specialist.
+
+Do not continue fresh-loan qualification.
+
+### Prompt Check
+
+Transfer is explicitly checked before ordinary qualification.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 06 — Out-of-Order Information
+
+### Customer
+"It's a residential house jointly owned with my wife. It's worth about 1.2 crore and I need 40 lakhs."
+
+### Expected State
+
+property_type = RESIDENTIAL
+ownership_status = JOINT
+market_value = ₹1.2 crore
+loan_amount = ₹40,00,000
+
+### Expected Next Step
+
+Ask about original property documents.
+
+### Prompt Check
+
+The prompt tells the agent to extract information from any order and skip already-known fields.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 07 — Ambiguous Documents
+
+### Customer
+"I think I have the property papers somewhere."
+
+### Expected State
+
+documents_available = UNKNOWN
+
+### Expected Behavior
+
+Ask for clarification.
+
+Do not assume YES.
+
+### Prompt Check
+
+The prompt explicitly distinguishes UNKNOWN from YES and NO.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 08 — Customer Correction
+
+### Customer Initially Says
+
+"It's a commercial property."
+
+Later:
+
+"Actually, sorry, it's a residential property."
+
+### Expected State
+
+property_type = RESIDENTIAL
+
+### Expected Behavior
+
+Use the latest clear answer.
+
+Re-check eligibility.
+
+### Prompt Check
+
+The prompt explicitly instructs the agent to replace outdated information with the latest clear statement.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 09 — Busy Customer
+
+### Customer
+"I'm busy right now. Please call me later."
+
+### Expected State
+
+callback_requested = YES
+status = CALLBACK_REQUESTED
+
+### Expected Behavior
+
+Ask preferred callback time and end the current call.
+
+### Prompt Check
+
+The prompt contains a dedicated callback flow.
+
+Result:
+
+PASS
+
+
+---
+
+# Review 10 — Customer Asks About Interest Rate
+
+### Customer
+"What interest rate will I get?"
+
+### Expected Behavior
+
+Do not invent a rate.
+
+Explain that the senior loan expert will provide exact interest-rate details.
+
+Return to qualification if incomplete.
+
+### Prompt Check
+
+The prompt explicitly prevents the agent from inventing interest rates.
+
+Result:
+
+PASS

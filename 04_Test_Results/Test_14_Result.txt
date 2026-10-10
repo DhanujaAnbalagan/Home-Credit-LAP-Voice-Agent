@@ -1,0 +1,35 @@
+# Test Case 14 — Customer Refuses the ₹75 Lakh Maximum
+
+Status: Passed for the core disqualification rule.
+
+Objective:
+Verify that a customer requesting more than ₹75 lakh is disqualified when they refuse the ₹75 lakh maximum.
+
+Transcript review:
+- The customer requested ₹90 lakh.
+- The agent explained that the offer is capped at ₹75 lakh and asked whether the customer would proceed with ₹75 lakh.
+- The customer refused and repeated that they needed ₹90 lakh.
+- The agent correctly explained that the offer could not proceed and ended the conversation.
+
+Post-call extraction from the screenshot:
+- qualification_status: DISQUALIFIED
+- requested_loan_amount: 9000000
+- final_qualification_amount: 7500000
+- property_type: Residential
+- ownership_status: Joint
+- documents_available: false
+- occupation: Salaried
+- income_mode: Bank
+- market_value: 9000000
+- tenure_years: 0
+- End-to-end latency: 2960 ms
+- Call Successful: Successful
+
+Important extraction note:
+The transcript does not establish several extracted fields shown above, including ownership, document availability, occupation, income mode, market value, or tenure. Treat those as unverified/default extraction values, not facts provided by the customer. The key result is DISQUALIFIED after refusal of the cap.
+
+Conclusion:
+The agent correctly handled the refusal and disqualified the customer.
+
+Audio issues:
+Not assessed from transcript and call-log screenshot alone.

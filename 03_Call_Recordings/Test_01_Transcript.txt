@@ -1,0 +1,23 @@
+agent: Hello, may I speak with Rahul?
+user: Yes. This is Rahul speaking. 
+agent: Hi Rahul, I’m Ananya, a virtual assistant calling from Home Credit. You have a pre-approved Loan Against Property offer up to ₹75 lakh. I’ll do a quick preliminary check—what type of property would you like to use?
+user: I have a residential house. 
+agent: Is the house solely in your name or jointly owned?
+user: It is solely owned by me. 
+agent: Are the original property documents currently available with you?
+user: Yes. I have the original property documents. 
+agent: What loan amount are you looking for?
+user: I need fifty lakh. 
+agent: What do you do for work—are you salaried or self-employed?
+user: IIM salary. 
+agent: Just to confirm, are you salaried or self-employed?
+user: Salary. 
+agent: Does your salary come into your bank account?
+user: Yes. My salary is credited to my bank account. 
+agent: What’s the estimated current market value of the property?
+user: Around eighty lakh. 
+agent: And what repayment tenure would you prefer, in years?
+user: Ten years. 
+agent: Thanks, Rahul. Your preliminary eligibility check is complete. A senior loan expert will call you shortly with the next steps and exact interest-rate details.
+user: Thank you. 
+agent: You’re welcome. Have a good day.

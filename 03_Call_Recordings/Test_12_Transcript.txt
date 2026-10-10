@@ -1,0 +1,22 @@
+agent: Hello, may I speak with Rahul?
+user: Yes. 
+user: This is Rahul. 
+agent: I’m Ananya calling from Home Credit about a pre-approved Loan Against Property offer of up to ₹75 lakh. This is a preliminary eligibility check, not final approval. What type of property would you like to use?
+user: Uh, residential house. 
+agent: Is the house solely in your name, or jointly owned?
+user: It's only owned. 
+agent: Just to 
+user: Sorry. 
+agent: confirm, is it solely owned by you?
+user: Solely own. 
+agent: Are the original property documents currently available with you?
+user: Yes. 
+agent: What loan amount are you looking for?
+user: Twenty lakhs. 
+agent: And are you salaried or self-employed?
+user: Salary and my salary comes from my bank of account. 
+agent: What’s the estimated current market value of the house?
+user: Fifty lakh. 
+agent: What repayment tenure would you prefer, in years?
+user: Two years. 
+agent: I’m sorry, but this offer requires a repayment tenure between 3 and 15 years, so two years doesn’t meet the criteria. Thanks for your time.

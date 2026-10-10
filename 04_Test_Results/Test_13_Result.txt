@@ -1,0 +1,31 @@
+# Test Case 13 — Tenure Above 15 Years
+
+Status: Passed for the core disqualification rule.
+
+Objective:
+Verify that a requested repayment tenure above 15 years is disqualified.
+
+Transcript review:
+- The customer provided a residential, solely owned property and confirmed original documents were available.
+- The customer requested ₹20 lakh, was salaried with bank-account income, and gave a market value of ₹50 lakh.
+- When the customer requested a 20-year tenure, the agent explained that the offer permits tenures from 3 to 15 years and ended the qualification attempt.
+
+Post-call extraction from the screenshot:
+- qualification_status: DISQUALIFIED
+- tenure_years: 20
+- property_type: Residential
+- ownership_status: Sole
+- documents_available: true
+- requested_loan_amount: 2000000
+- final_qualification_amount: 2000000
+- occupation: Salaried
+- income_mode: Bank
+- market_value: 5000000
+- End-to-end latency: 3264 ms
+- Call Successful: Successful
+
+Conclusion:
+The agent correctly disqualified the customer for a 20-year tenure.
+
+Audio issues:
+Not assessed from transcript and call-log screenshot alone.

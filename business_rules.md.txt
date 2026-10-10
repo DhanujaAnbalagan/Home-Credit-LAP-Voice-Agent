@@ -1,0 +1,395 @@
+# Home Credit LAP Voice Agent — Business Rules
+
+## 1. Objective
+
+The AI Voice Agent contacts existing Home Credit customers and performs a preliminary qualification for a pre-approved Loan Against Property (LAP) offer.
+
+The maximum loan amount for this offer is ₹75,00,000 (75 lakhs).
+
+The AI agent does not make the final loan approval decision. Qualified customers are handed over to a senior loan expert.
+
+---
+
+## 2. Customer Verification
+
+- Greet the customer professionally.
+- Verify that the agent is speaking with the correct customer.
+
+If the customer is busy:
+
+- Acknowledge that they are busy.
+- Ask for a preferred callback time.
+- Record the callback state.
+- End the current call politely.
+
+---
+
+## 3. Offer
+
+After successful customer verification:
+
+- Explain that the call is regarding a pre-approved Loan Against Property offer.
+- Mention that the offer is available up to ₹75,00,000.
+- Explain the purpose of the call naturally.
+- Do not promise final approval.
+
+---
+
+## 4. Eligibility Criteria
+
+The agent must collect and validate the following **7 business criteria**:
+
+1. Property Type
+2. Ownership
+3. Original Property Documents
+4. Loan Amount
+5. Occupation and Income Mode
+6. Current Market Value
+7. Loan Tenure
+
+Internally, **Occupation** and **Income Mode** are stored as two separate fields because both must be validated independently.
+
+---
+
+### 4.1 Property Type
+
+Eligible:
+
+- Residential — house/flat
+- Commercial — shop/office
+- Industrial — factory
+
+Not eligible:
+
+- Agricultural property
+
+If the property is agricultural:
+
+→ Disqualify immediately.
+
+---
+
+### 4.2 Ownership
+
+Eligible:
+
+- Sole ownership
+- Joint ownership
+
+If ownership is unclear:
+
+→ Ask for clarification.
+
+---
+
+### 4.3 Original Property Documents
+
+The customer must have the original property documents available.
+
+Eligible:
+
+- Original documents available
+
+Not eligible:
+
+- Original documents not available
+
+If original documents are not available:
+
+→ Disqualify immediately.
+
+---
+
+### 4.4 Loan Amount
+
+Maximum allowed amount:
+
+₹75,00,000
+
+If the customer requests ₹75,00,000 or less:
+
+→ Continue qualification.
+
+If the customer requests more than ₹75,00,000:
+
+1. Explain that the maximum amount available under this offer is ₹75,00,000.
+2. Ask whether they would like to proceed with ₹75,00,000.
+
+If customer agrees:
+
+→ Continue qualification.
+
+If customer refuses:
+
+→ End the call politely because the requested amount is outside this offer.
+
+### Internal Loan Amount Tracking
+
+The agent should internally distinguish between:
+
+- `requested_loan_amount` — the amount originally requested by the customer.
+- `final_qualification_amount` — the amount used for qualification.
+
+If the customer requests ₹75 lakh or less:
+
+```text
+requested_loan_amount = customer's requested amount
+final_qualification_amount = customer's requested amount```
+
+### 4.5 Occupation and Income Mode
+
+Eligible occupations:
+- Salaried
+- Self-employed
+
+Income must be received through:
+- Bank
+
+Not eligible:
+- Cash income
+
+If the customer receives income only in cash:
+
+→ Disqualify immediately.
+
+Occupation and income mode should be treated as separate pieces of information.
+
+---
+
+### 4.6 Current Market Value
+
+Collect the customer's estimated current market value of the property.
+
+Important:
+
+- The assignment does NOT specify a minimum property value.
+- Do not invent a minimum market-value requirement.
+- Record the customer's stated estimated market value.
+
+---
+
+### 4.7 Loan Tenure
+
+Eligible tenure:
+
+3 to 15 years, inclusive.
+
+Eligible:
+- 3 years
+- 4 years
+- ...
+- 15 years
+
+Not eligible:
+- Less than 3 years
+- More than 15 years
+
+If the requested tenure is outside 3–15 years:
+
+→ Disqualify immediately.
+
+---
+
+## 5. Existing Loan / EMI Reduction
+
+The standard flow is for a fresh loan.
+
+If the customer says:
+
+- They already have an existing loan on the property, OR
+- They want to reduce their current EMI
+
+Then:
+
+→ Do NOT treat this as a normal disqualification.
+
+Instead:
+
+1. Explain that this requirement will be handled by a specialist.
+2. Inform the customer that a loan-transfer specialist will contact them.
+3. End the call politely.
+
+Status:
+
+TRANSFER_REQUIRED
+
+---
+
+## 6. Immediate Disqualification Conditions
+
+The customer is immediately disqualified from this specific offer if:
+
+- Property is agricultural.
+- Original property documents are unavailable.
+- Income is received through cash.
+- Loan tenure is below 3 years.
+- Loan tenure is above 15 years.
+- Customer requests more than ₹75,00,000 and refuses to proceed with ₹75,00,000.
+
+When disqualified:
+
+- Clearly explain the reason.
+- Be polite and professional.
+- Do not argue with the customer.
+- Do not continue asking unnecessary eligibility questions.
+- End the call.
+
+Status:
+
+DISQUALIFIED
+
+---
+
+## 7. Qualified Customer
+
+A customer is qualified for the next stage only when:
+
+- Property type is eligible.
+- Ownership is valid.
+- Original documents are available.
+- Loan amount is within ₹75,00,000 or the customer has accepted ₹75,00,000.
+- Occupation is eligible.
+- Income is received through bank.
+- Market value has been collected.
+- Tenure is between 3 and 15 years inclusive.
+- No transfer condition applies.
+- No disqualification condition applies.
+
+Then:
+
+1. Tell the customer that a senior loan expert will call them shortly.
+2. The senior loan expert will provide exact interest-rate details.
+3. Do not invent or quote an interest rate.
+
+Status:
+
+QUALIFIED
+
+---
+
+## 8. Out-of-Order Information
+
+The customer may provide information in any order.
+
+Example:
+
+Customer:
+"My house is worth around ₹1.2 crore, I need ₹50 lakh, and it's jointly owned with my wife."
+
+The agent should capture:
+
+- Property type → Residential
+- Market value → ₹1.2 crore
+- Loan amount → ₹50 lakh
+- Ownership → Joint
+
+The agent must NOT ask for information that the customer has already clearly provided.
+
+After extracting the information:
+
+→ Continue with the first missing eligibility item.
+
+---
+
+## 9. Unknown / Ambiguous Information
+
+The agent must distinguish between:
+
+- YES
+- NO
+- UNKNOWN / UNCLEAR
+
+The agent must never assume an answer.
+
+Example:
+
+Customer:
+"I think I have the property papers somewhere."
+
+Do not interpret this automatically as:
+
+Documents = YES
+
+Instead:
+
+→ Ask a clarification question.
+
+---
+
+## 10. Customer Corrections
+
+If the customer corrects previously provided information:
+
+Example:
+
+Customer:
+"I said commercial earlier, but actually it's a residential property."
+
+The latest clear information should replace the previous information.
+
+The agent should:
+
+1. Update the stored value.
+2. Re-check eligibility rules.
+3. Continue from the appropriate point.
+
+---
+
+## 11. Handoff Rule
+
+The AI agent must NOT hand off the customer as qualified until all required eligibility information has been collected and validated.
+
+If the conversation is interrupted or diverted:
+
+→ Return to the first unanswered required eligibility question.
+
+Only after all required information is complete:
+
+→ QUALIFIED
+
+---
+
+## 12. Conversation Priority
+
+When multiple things happen in one customer response, process them in this order:
+
+1. Customer asks to stop / opt out
+2. Transfer requirement
+3. Immediate disqualification
+4. Correction of previous information
+5. New eligibility information
+6. Clarification of ambiguous information
+7. Next missing eligibility question
+
+---
+
+## 13. Important Boundaries
+
+The AI agent must NOT:
+
+- Invent eligibility criteria.
+- Invent minimum property value requirements.
+- Invent interest rates.
+- Promise final loan approval.
+- Claim that qualification guarantees loan approval.
+- Ignore a disqualification condition.
+- Treat an existing loan as an ordinary disqualification.
+- Ask again for information the customer has already clearly provided.
+
+---
+
+## 14. Final States
+
+The conversation can end in one of these states:
+
+### CALLBACK_REQUESTED
+Customer is busy and has provided a preferred callback time.
+
+### TRANSFER_REQUIRED
+Customer has an existing loan on the property or wants EMI reduction.
+
+### DISQUALIFIED
+Customer fails one of the eligibility conditions.
+
+### QUALIFIED
+Customer satisfies all required conditions and is ready for handoff to a senior loan expert.

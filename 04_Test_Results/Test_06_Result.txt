@@ -1,0 +1,21 @@
+# Test Case 06 — Existing Loan on Property
+
+**Status:** Core transfer behavior passed; extraction review pending.
+
+**Objective:** Verify that a customer who already has a loan against the property is transferred to specialist follow-up.
+
+**Expected behavior:** The agent should acknowledge the existing loan, explain that a specialist will contact the customer, and end the call without continuing the standard qualification process.
+
+**Actual behavior:** The agent recognized the existing loan, explained that a specialist would handle the requirement, and ended the conversation without asking further qualification questions.
+
+**Passed checks:**
+- Existing loan recognized.
+- Specialist follow-up communicated.
+- Normal qualification stopped.
+- Call ended appropriately.
+
+**Issue observed:** The customer’s loan amount response was unclear in the transcript (“fifteen minutes. Fifteen lakhs”). Verify the extracted amount before recording the final result.
+
+**Audio issues:** Not assessed from the transcript alone.
+
+**Retest required:** Only if extraction review or audio review identifies an issue.

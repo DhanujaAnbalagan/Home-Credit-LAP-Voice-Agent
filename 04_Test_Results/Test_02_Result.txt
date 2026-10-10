@@ -1,0 +1,56 @@
+# Test 02 — Agricultural Property
+
+**Test objective:** Verify that the voice agent correctly disqualifies a customer whose property is agricultural.
+
+**Expected outcome:** `DISQUALIFIED`
+
+**Test status:** Core rule passed; overall test pending review.
+
+## 1. Test Scenario
+
+The customer confirms their identity, hears the Home Credit Loan Against Property offer, and states that their property is agricultural land.
+
+**Customer response:** “My property is agricultural land.”
+
+## 2. Expected Agent Behavior
+
+- Identify the property type as Agricultural.
+- Explain politely that agricultural property is not eligible for this Loan Against Property offer.
+- End the call politely.
+- Do not continue asking eligibility questions.
+- Do not promise a senior loan expert follow-up.
+
+## 3. Post-Call Extraction Results
+
+| Field | Extracted value |
+|---|---|
+| `qualification_status` | `DISQUALIFIED` |
+| `property_type` | `Agricultural` |
+| `ownership_status` | `Sole` |
+| `documents_available` | `false` |
+| `requested_loan_amount` | `0` |
+| `final_qualification_amount` | `0` |
+| `occupation` | `Salaried` |
+| `income_mode` | `Bank` |
+| `market_value` | `0` |
+| `tenure_years` | `0` |
+
+## 4. Test Checks
+
+- [x] Agricultural property identified correctly.
+- [x] Qualification status set to DISQUALIFIED.
+- [ ] Agent explained the reason for disqualification politely.
+- [ ] Agent ended the call without continuing eligibility questions.
+- [ ] No inappropriate senior expert follow-up promised.
+- [ ] Unanswered fields handled appropriately during post-call extraction.
+
+##5. Audio Issues and Observations
+
+- No audio lag or playback issues were observed during the test.
+- Audio was clear throughout the conversation.## 6. Final Result
+
+**Result:** Pending review.
+
+**Reason:** The extracted qualification status and property type are correct. The conversation ending and the accuracy of other extracted fields still need verification.
+
+**Next action:** Review the transcript and call log to confirm that the agent explained the ineligibility reason and ended the conversation appropriately.

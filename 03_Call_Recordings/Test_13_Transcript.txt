@@ -1,0 +1,21 @@
+agent: Hello, may I speak with Rahul?
+user: Yes 
+agent: Hi Rahul, I’m Ananya, a virtual assistant from Home Credit. You have a pre-approved Loan Against Property offer of up to ₹75 lakh. I’ll do a quick preliminary check—what type of property would you like to use?
+user: A residential house. 
+agent: Is the house solely in your name or jointly owned?
+user: Solely owned. 
+agent: Are the original property documents currently available with you?
+user: Yes. 
+agent: What loan amount are you looking for?
+user: Twenty lakh. 
+agent: And are you salaried or self-employed?
+user: Salary, and my salary comes through my bank account. 
+agent: What’s the estimated current market value of the house?
+user: Fifty lakh. 
+agent: And what repayment tenure would you prefer, in years?
+user: Twenty years. 
+agent: I’m sorry, a 20-year tenure doesn’t meet the criteria for this specific offer, which allows 3 to 15 years.
+user: Okay. 
+agent: Thank you for your time.
+user: Thank you. 
+agent: You’re 

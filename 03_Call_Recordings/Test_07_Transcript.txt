@@ -1,0 +1,25 @@
+agent: Hello, may I speak with Rahul?
+user: Yes This is 
+agent: Hi 
+user: This 
+agent: Rahul, 
+user: is 
+agent: Hi Rahul, this is Ananya, a virtual assistant from Home Credit. I'm calling about a pre-approved Loan Against Property offer of up to ₹75 lakh and a quick preliminary eligibility check. Is now a good time?
+user: Yeah. Yeah. You can continue. Please tell me more. 
+agent: It’s a pre-approved offer for a Loan Against Property of up to ₹75 lakh. I’ll just do a brief preliminary check. What type of property would you like to use—residential, commercial, or industrial?
+user: Residential. 
+agent: Is the residential property solely in your name or jointly owned?
+user: Jointly owned with my wife. 
+agent: Are the original property documents currently available with you?
+agent: Rahul, are the original property documents available with you?
+user: Yes. 
+agent: How much loan amount are you looking for?
+user: Fifty lakh. 
+agent: What do you do 
+user: And I 
+agent: for work—are 
+user: want to reduce my existing monthly e EMI. 
+agent: Since you want to reduce the EMI on an existing property loan, a specialist will handle this as a loan-transfer requirement and contact you shortly.
+user: Okay. Thanks. 
+agent: You're welcome. A specialist will contact you shortly. Have a 
+agent: good day.

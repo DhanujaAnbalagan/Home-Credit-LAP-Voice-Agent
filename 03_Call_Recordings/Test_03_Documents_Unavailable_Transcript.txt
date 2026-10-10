@@ -1,0 +1,11 @@
+agent: Hello, may I speak with Rahul?
+user: Yes. Is Rahul speaking. 
+agent: Yes, Rahul. I'm Ananya calling from Home Credit about a pre-approved Loan Against Property offer up to ₹75 lakh. May I quickly check a few eligibility details?
+user: Yeah. 
+agent: Could you tell me what type of property you'd like to use—residential, commercial, or industrial?
+user: I have a residential house joint loan with my wife. 
+agent: Is there already a loan on this property?
+user: No. I don't have the urgent property documents. They are unavailable. 
+agent: I'm sorry, but original property documents need to be available for this specific offer, so we can't proceed.
+user: Okay. Thank you. 
+agent: You're welcome. Take care.

@@ -1,0 +1,19 @@
+agent: Hello, may I speak with Rahul?
+user: Yes. Is speaking. 
+agent: This is Ananya from Home Credit. You're eligible for a pre-approved Loan Against Property offer of up to ₹75 lakh, subject to a preliminary check. What type of property would you like to use?
+user: I have a residential house. 
+agent: Is the house solely in your name or jointly owned?
+user: Jointly 
+agent: Are the original property documents currently available with you?
+user: Yes. I have the original property. Documents. 
+agent: How much would you like to borrow?
+user: I need fifteen minutes. Fifteen lakhs. 
+agent: What do you do for work—are you salaried or self-employed?
+user: Self employed. 
+agent: And does your income come through a bank account or mainly in cash?
+user: Bank. 
+agent: What would you estimate the current market value of the house to be?
+user: There is already a loan against this property. 
+agent: Since there’s already a loan on the property, a specialist will handle the loan-transfer requirement and contact you shortly.
+user: Thank you. 
+agent: You're welcome. A specialist will contact you shortly.

@@ -1,0 +1,42 @@
+# Test 01 — Happy Path
+
+**Test objective:** Verify that the agent correctly qualifies an eligible customer for a Home Credit Loan Against Property (LAP).
+
+**Expected outcome:** `QUALIFIED`
+
+**Test status:** Needs review
+
+## Checks
+
+- [ ] Correct customer verification
+- [ ] All eligibility questions answered
+- [ ] Property type, ownership, and original documents captured correctly
+- [ ] Loan amount, occupation, and income mode captured correctly
+- [ ] Market value and tenure captured correctly
+- [ ] Correct qualification decision
+- [ ] No invented interest rates or guaranteed approval
+- [ ] Natural conversation and accurate voice recognition
+- [ ] Acceptable response latency
+
+## Issues observed
+
+- Slow agent responses during the call.
+- End-to-end latency reported by Retell AI: 24,066 ms.
+- Transcript matched the spoken answers.
+- Final qualification decision and post-call extracted fields still need verification.
+
+## Next action
+
+Review the agent's responses and post-call extraction in Retell AI. Verify that all eligibility fields were captured correctly and that the final qualification status is `QUALIFIED`.
+
+## Evidence files
+
+- Recording: `Test_01_Happy_Path`
+- Call log: `Test_01_Happy_Path_Call_Log.png`
+- Transcript: `Test_01_Happy_Path_Transcript.txt`
+
+## Final result
+
+**Result:** Pending verification
+
+**Reason:** The transcript matched the spoken answers, but the agent's final decision and extracted fields have not yet been fully verified. Response latency also requires review.
